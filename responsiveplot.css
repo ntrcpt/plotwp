@@ -1,0 +1,9 @@
+
+/*
+* ntrcpt 2017-10-27
+* remove plot.ly branding and export button
+*/
+.js-plotly-plot .plotly .modebar-btn.modebar-btn--logo,
+.js-plotly-plot .plotly .modebar-btn[data-title="Save and edit plot in cloud"] {display: none;}
+
+.embed__edit-link {display: none;}

@@ -1,24 +1,25 @@
 <?php
 
 /**
- * @package Plotwp
- * @version 0.4
+ * @package ResponsivePlotwp
+ * @version 0.5
  */
 /*
-Plugin Name: Plot.wp
-Plugin URI: http://github.com/paleolimbot/plotwp
-Description: Add JSON-based plots to posts and pages using the <a href="https://plot.ly/javascript/">plotly.js</a> API
-Author: Dewey Dunnington
-Version: 0.4
-Author URI: http://www.fishandwhistle.net/
+Plugin Name: ResponsivePlot.wp
+Plugin URI: http://github.com/ntrcpt/plotwp
+Description: Add JSON-based plots to posts and pages using the <a href="https://plot.ly/javascript/">plotly.js</a> API. Fork of Plot.wp (https://github.com/paleolimbot/plotwp) by Dewey Dunnington 
+Author: David Reiner
+Version: 0.5
+Author URI: https://davidreiner.at/
 */
 
 /*
- * Add the plot.ly JS library and defaultplot.css to the header
+ * Add plot.ly JS library from cdn + responsive unbranded plot layout responsiveplot.css to header
  */
 function plotwp_enqueue_scripts() {
-    wp_enqueue_script( 'plot.ly', plugins_url('plotly-1.19.2.min.js', __FILE__), false );
-    wp_enqueue_style('plotwp_default', plugins_url('defaultplot.css', __FILE__), false);
+    wp_register_script('plot.ly', 'https://cdn.plot.ly/plotly-latest.min.js');
+    wp_enqueue_script( 'plot.ly', false );
+    wp_enqueue_style('plotwp_default', plugins_url('responsiveplot.css', __FILE__), false);
 }
 
 add_action( 'wp_enqueue_scripts', 'plotwp_enqueue_scripts' );
@@ -29,7 +30,7 @@ add_action( 'wp_enqueue_scripts', 'plotwp_enqueue_scripts' );
 $plotwp_plotly_div_id = 1;
 function plotwp_plotly_shortcode( $atts, $content = null ) {
     global $plotwp_plotly_div_id;
-    
+
     if(empty($content)) {
         return "";
     }
@@ -37,18 +38,34 @@ function plotwp_plotly_shortcode( $atts, $content = null ) {
     if(empty($json)) {
         return "<b>Invalid JSON in plotly shortcode</b>";
     }
-    
+
     if(!is_array($atts)) {
         $atts = array();
     }
     $divatts = join(' ', array_map(function($key) use ($atts) {
             return $key.'="'. esc_attr($atts[$key]).'"';
         }, array_keys($atts)));
-    
+
     $plotly_div_id = 'plotwp_plotly_' . $plotwp_plotly_div_id++;
     return '<div ' . $divatts . ' id="' . $plotly_div_id . '"></div>
     <script type="text/javascript">
-        Plotly.plot( document.getElementById("' . $plotly_div_id . '"), ' . json_encode($json) . ' );
+      (function() {
+      var d3 = Plotly.d3;
+      var WIDTH_IN_PERCENT_OF_PARENT = 100,
+          HEIGHT_IN_PERCENT_OF_PARENT = 66;
+      var gd3 = d3.select(\'#' . $plotly_div_id . '\')
+          .style({
+            width: WIDTH_IN_PERCENT_OF_PARENT + \'%\',
+            \'margin-left\': (100 - WIDTH_IN_PERCENT_OF_PARENT) / 2 + \'%\',
+            height: HEIGHT_IN_PERCENT_OF_PARENT + \'vh\',
+            \'margin-top\': 0
+        });
+      var gd = gd3.node();
+        Plotly.plot( gd, ' . json_encode($json) . ' );
+        window.onresize = function() {
+            Plotly.Plots.resize(gd);
+        };
+    })();
     </script>';
 }
 add_shortcode( 'plotly', 'plotwp_plotly_shortcode' );

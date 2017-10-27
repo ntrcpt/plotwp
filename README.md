@@ -5,7 +5,7 @@ Add JSON-based plots to posts and pages using the [plotly](https://plot.ly/javas
 
 ## Installation
 
-Install **Plot.wp** from the Wordpress.org plugins directory or from the [releases page](https://github.com/paleolimbot/plotwp/releases). Unzip the folder into your `plugins` directory and start using the `[plotly]...[/plotly]` shortcode!
+Install **ResponsivePlot.wp** from the [releases page](https://github.com/paleolimbot/plotwp/releases). Unzip the folder into your `plugins` directory and start using the `[plotly]...[/plotly]` shortcode!
 
 ## The plotly shortcode
 
@@ -31,7 +31,7 @@ The plot.wp plugin works by taking whatever is between the `[plotly]` and `[/plo
 
 ![screenshot-1.png](screenshot-1.png)
 
-You can also set attributes of the enclosing `div` by passing these to the shortcode in the form `[plotly style="height: 200px"]...[/plotly]`. Default settings are controlled by the `defaultplot.css` stylesheet, although this behaviour may be migrated to a settings page in the future.
+Attempt to make plots responsive. Plot will reload with window.onresize. Width and height are set in percent of parent element (WIDHT_IN_PERCENT_OF_PARENT and HEIGHT_IN_PERCENT_OF_PARENT in plotwp.php).
 
 ## How to use the plotly.js API
 
