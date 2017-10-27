@@ -1,11 +1,11 @@
 
-# Plot.wp
+# ResponsivePlot.wp
 
 Add JSON-based plots to posts and pages using the [plotly](https://plot.ly/javascript/) API
 
 ## Installation
 
-Install **ResponsivePlot.wp** from the [releases page](https://github.com/paleolimbot/plotwp/releases). Unzip the folder into your `plugins` directory and start using the `[plotly]...[/plotly]` shortcode!
+Install **ResponsivePlot.wp** from the [releases page](https://github.com/ntrcpt/plotwp/releases). Unzip the folder into your `plugins` directory and start using the `[plotly]...[/plotly]` shortcode!
 
 ## The plotly shortcode
 
